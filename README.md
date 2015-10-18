@@ -1,56 +1,31 @@
-# seed-element
+# &lt;typed-text&gt;
 
-An element providing a starting point for your own reusable Polymer elements.
+Polymer 1.0 element that simulates typing similar to [typed.js](https://github.com/mattboldt/typed.js/) for jQuery.
 
+Check out the [demo and full documentation](http://sespiros.github.io/typed-text/)
 
-## Dependencies
+## Setup
+Install with bower or [download the zip](https://github.com/sespiros/typed-text/archive/v1.0.0.zip)
+```bash
+bower install --save sespiros/typed-text
+```
+Import it in your code
+```html
+<!-- for relative paths -->
+<link rel="import"href="../bower_components/typed-text/typed-text.html">
+```
 
-Element dependencies are managed via [Bower](http://bower.io/). You can
-install that via:
+## Usage
+```html
+<typed-text></typed-text>
+```
 
-    npm install -g bower
+## Features
+- Can **type** and **delete** text
+- Supports constant **looping** between text
+- Cursor customization with custom-style
+- Smart **noretype** function that finds common parts of consecutive strings as shown in the [demo](http://sespiros.github.io/typed-text/)
+- Style it however you want for cool effects!
 
-Then, go ahead and download the element's dependencies:
-
-    bower install
-
-
-## Playing With Your Element
-
-If you wish to work on your element in isolation, we recommend that you use
-[Polyserve](https://github.com/PolymerLabs/polyserve) to keep your element's
-bower dependencies in line. You can install it via:
-
-    npm install -g polyserve
-
-And you can run it via:
-
-    polyserve
-
-Once running, you can preview your element at
-`http://localhost:8080/components/seed-element/`, where `seed-element` is the name of the directory containing it.
-
-
-## Testing Your Element
-
-Simply navigate to the `/test` directory of your element to run its tests. If
-you are using Polyserve: `http://localhost:8080/components/seed-element/test/`
-
-### web-component-tester
-
-The tests are compatible with [web-component-tester](https://github.com/Polymer/web-component-tester).
-Install it via:
-
-    npm install -g web-component-tester
-
-Then, you can run your tests on _all_ of your local browsers via:
-
-    wct
-
-#### WCT Tips
-
-`wct -l chrome` will only run tests in chrome.
-
-`wct -p` will keep the browsers alive after test runs (refresh to re-run).
-
-`wct test/some-file.html` will test only the files you specify.
+## Contribute
+Feel free to extend it or propose new functionality

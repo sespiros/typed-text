@@ -65,13 +65,13 @@ Example:
         value: 2000
       },
 
-      // Speed of typing
+      // Typing speed
       speed: {
         type: Number,
         value: 60
       },
 
-      // Speed of deleting
+      // Deleting speed
       delspeed: {
         type: Number,
         value: 40
@@ -122,8 +122,8 @@ Example:
       //
       // This is the point where you should make modifications to the DOM (when
       // necessary), or kick off any processes the element wants to perform.
-      this.calculateSubIndex(this._indexArray);
-      this.async(this.typing, 500);
+      this._calculateSubIndex(this._indexArray);
+      this.async(this._typing, 500);
     },
 
     attached: function() {
@@ -144,33 +144,33 @@ Example:
 
     // Element Behavior
 
-    typing: function() {
+    _typing: function() {
       this._index += 1;
       this.typed = this.strings[this._indexArray].substr(0, this._index);
 
       if(this._index <= this.strings[this._indexArray].length){
-        this.async(this.typing, this.speed);
+        this.async(this._typing, this.speed);
       } else {
         if(this.loop || (this._indexArray != this.strings.length - 1)) {
-          this.async(this.deleting, this.wait);
+          this.async(this._deleting, this.wait);
         }
       }
     },
 
-    deleting: function() {
+    _deleting: function() {
       this._index -= 1;
 
       if(this._index >= this._subindex) {
         this.typed = this.strings[this._indexArray].substr(0, this._index - 1);
-        this.async(this.deleting, this.delspeed);
+        this.async(this._deleting, this.delspeed);
       } else {
         this._indexArray = (this._indexArray + 1)%this.strings.length;
-        this.calculateSubIndex(this._indexArray);
-        this.typing();
+        this._calculateSubIndex(this._indexArray);
+        this._typing();
       }
     },
 
-    calculateSubIndex: function(indexArray) {
+    _calculateSubIndex: function(indexArray) {
       var i = 0;
       var next = (this._indexArray + 1)%this.strings.length;
       while(this.strings[indexArray][i] == this.strings[next][i]) {

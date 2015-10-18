@@ -2,9 +2,9 @@
   "name": "typed-text",
   "version": "1.0.0",
   "authors": [
-    "Anonymous <anonymous@example.com>"
+    "Seimenis Spyros <sespiros@gmail.com>"
   ],
-  "description": "An element providing a solution to no problem in particular.",
+  "description": "An element that simulates typing.",
   "keywords": [
     "web-component",
     "web-components",
