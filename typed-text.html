@@ -26,10 +26,16 @@ Example:
       box-sizing: border-box;
     }
 
+    .cursor {
+      @apply(--cursor-theme);
+    }
+
+    @apply(--typed-text-options);
+
   </style>
 
   <template>
-    <p>{{typed}}</p>
+    <p>{{typed}}<span class="cursor">{{cursor}}</span></p>
   </template>
 
 </dom-module>
@@ -56,19 +62,25 @@ Example:
       // Time to wait between typed text
       wait: {
         type: Number,
-        value: 1000
+        value: 2000
       },
 
       // Speed of typing
       speed: {
         type: Number,
-        value: 30
+        value: 60
       },
 
       // Speed of deleting
       delspeed: {
         type: Number,
-        value: 10
+        value: 40
+      },
+
+      // custom cursor
+      cursor: {
+        type: String,
+        value: '|' //▍alternative block
       },
 
       // Typed text
