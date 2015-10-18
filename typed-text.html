@@ -35,7 +35,7 @@ Example:
   </style>
 
   <template>
-    <p>{{typed}}<span class="cursor">{{cursor}}</span></p>
+    <div>{{typed}}<span class="cursor">{{cursor}}</span></div>
   </template>
 
 </dom-module>
@@ -112,7 +112,7 @@ Example:
       //
       // This is the point where you should make modifications to the DOM (when
       // necessary), or kick off any processes the element wants to perform.
-      this.typing();
+      this.async(this.typing, this.wait);
     },
 
     attached: function() {
