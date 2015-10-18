@@ -10,11 +10,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <link rel="import" href="../polymer/polymer.html">
 
 <!--
-An element providing a solution to no problem in particular.
+An element that simulates typing.
 
 Example:
 
-    <seed-element></seed-element>
+    <typed-text></typed-text>
 
 @demo
 -->
@@ -26,22 +26,10 @@ Example:
       box-sizing: border-box;
     }
 
-    .author img {
-      float: left;
-      margin-right: 5px;
-      max-height: 100px;
-      max-width: 100px;
-    }
   </style>
 
   <template>
-    <h1>&lt;typed-text&gt;</h1>
-    <content></content>
-    <p class="author">
-      <img src="{{author.image}}">
-      Cheers,<br/>
-      <span class="name">{{author.name}}</span>
-    </p>
+    <p>{{typed}}</p>
   </template>
 
 </dom-module>
@@ -54,35 +42,48 @@ Example:
 
     properties: {
 
-      /**
-       * `fancy` indicates that the element should don a monocle and tophat,
-       * while checking its pocket watch.
-       */
-      fancy: Boolean,
-
-      /**
-       * Describes the author of the element, but is really just an excuse to
-       * show off JSDoc annotations.
-       *
-       * @type {{name: string, image: string}}
-       */
-      author: {
-        type: Object,
-        // Use `value` to provides a default value for a property, by setting it
-        // on your element's prototype.
-        //
-        // If you provide a function, as we do here, Polymer will call that
-        // _per element instance_.
-        //
-        // We do that to ensure that each element gets its own copy of the
-        // value, rather than having it shared across all instances (via the
-        // prototype).
+      // Array of user provided strings for typing
+      strings: {
+        type: Array,
         value: function() {
-          return {
-            name:  'Dimitri Glazkov',
-            image: 'http://addyosmani.com/blog/wp-content/uploads/2013/04/unicorn.jpg',
-          };
+          return ['typed-text is awesome', 'it supports deleting!'];
         }
+      },
+
+      // Time to wait between typed text
+      wait: {
+        type: Number,
+        value: 2000
+      },
+
+      // Speed of typing
+      speed: {
+        type: Number,
+        value: 30
+      },
+
+      // Speed of deleting
+      delspeed: {
+        type: Number,
+        value: 10
+      },
+
+      // Typed text
+      _typed: {
+        type: String,
+        value: ' '
+      },
+
+      // Index of Strings array
+      _indexArray: {
+        type: Number,
+        value: 0
+      },
+
+      // Index of typed string
+      _index: {
+        type: Number,
+        value: -1
       },
 
     },
@@ -96,6 +97,7 @@ Example:
       //
       // This is the point where you should make modifications to the DOM (when
       // necessary), or kick off any processes the element wants to perform.
+      this.typing();
     },
 
     attached: function() {
@@ -116,33 +118,30 @@ Example:
 
     // Element Behavior
 
-    /**
-     * The `seed-element-lasers` event is fired whenever `fireLasers` is called.
-     *
-     * @event seed-element-lasers
-     * @detail {{sound: String}}
-     */
+    typing: function() {
+      this._index += 1;
+      this.typed = this.strings[this._indexArray].substr(0, this._index);
 
-    /**
-     * Sometimes it's just nice to say hi.
-     *
-     * @param {string} greeting A positive greeting.
-     * @return {string} The full greeting.
-     */
-    sayHello: function(greeting) {
-      var response = greeting || 'Hello World!';
-      return 'typed-text says, ' + response;
+      if(this._index <= this.strings[this._indexArray].length){
+        this.async(this.typing, this.speed);
+      } else {
+        if(this._indexArray != this.strings.length - 1) {
+          this.async(this.deleting, this.wait);
+        }
+      }
     },
 
-    /**
-     * Attempts to destroy this element's enemies with an any beam of light!
-     *
-     * Or, at least, dispatches an event in the vain hope that someone else will
-     * do the zapping.
-     */
-    fireLasers: function() {
-      this.fire('typed-text-lasers', {sound: 'Pew pew!'});
-    }
+    deleting: function() {
+      this._index -= 1;
+
+      if(this._index >= 0) {
+        this.typed = this.strings[this._indexArray].substr(0, this._index - 1);
+        this.async(this.deleting, this.delspeed);
+      } else {
+        this._indexArray += 1;
+        this.typing();
+      }
+    },
 
   });
 

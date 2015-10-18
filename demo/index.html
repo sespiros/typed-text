@@ -20,17 +20,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
     <p>An example of <code>&lt;typed-text&gt;</code>:</p>
 
-    <button>Say Something</button>
-
-    <typed-text author='{"name": "Lord Meowser", "image": "http://placehold.it/100x100"}' fancy>
-      <h2>Hello typed-text</h2>
-    </typed-text>
-
-    <script>
-      document.querySelector('button').addEventListener('click', function() {
-        alert(document.querySelector('typed-text').sayHello('Hallo!'));
-      });
-    </script>
+    <typed-text speed="30" delspeed="100" wait="1000"></typed-text>
 
   </body>
 </html>
