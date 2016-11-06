@@ -1,6 +1,6 @@
 # &lt;typed-text&gt;
 
-Polymer 1.0 element that simulates typing similar to [typed.js](https://github.com/mattboldt/typed.js/) for jQuery.
+Polymer 1.4 element that simulates typing similar to [typed.js](https://github.com/mattboldt/typed.js/) for jQuery.
 
 Check out the [demo and full documentation](http://sespiros.github.io/typed-text/)
 
@@ -29,3 +29,20 @@ Import it in your code
 
 ## Contribute
 Feel free to extend it or propose new functionality
+<!--
+```
+<custom-element-demo>
+  <template>
+    <script src="../webcomponentsjs/webcomponents-lite.js"></script>
+    <link rel="import" href="typed-text.html">
+    <link rel="import" href="demo/app-theme.html">
+    <typed-text cursor="▍" noretype loop strings='[
+      "Polymer is awesome",
+      "Polymer is easy",
+      "Polymer rocks!",
+      "<typed-text> element rocks too!"
+    ]'></typed-text>
+  </template>
+</custom-element-demo>
+```
+-->

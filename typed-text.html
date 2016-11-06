@@ -1,184 +1,140 @@
-<!--
-@license
-Copyright (c) 2015 The Polymer Project Authors. All rights reserved.
-This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
-The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
-The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
-Code distributed by Google as part of the polymer project is also
-subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
--->
 <link rel="import" href="../polymer/polymer.html">
 
 <!--
-An element that simulates typing.
+`typed-text`
+An element that simulates typing
 
-Example:
-
-    <typed-text></typed-text>
-
-@demo
+@demo demo/index.html
 -->
 <dom-module id="typed-text">
-
-  <style>
-    :host {
-      display: block;
-      box-sizing: border-box;
-    }
-
-    .cursor {
-      @apply(--cursor-theme);
-    }
-
-    @apply(--typed-text-options);
-
-  </style>
-
   <template>
+    <style>
+      :host {
+        display: block;
+        box-sizing: border-box;
+      }
+      .cursor {
+        @apply(--cursor-theme);
+      }
+      @apply(--typed-text-options);
+    </style>
     <div>{{typed}}<span class="cursor">{{cursor}}</span></div>
   </template>
 
+  <script>
+
+    Polymer({
+
+      is: 'typed-text',
+
+      properties: {
+
+        // Array of user provided strings for typing
+        strings: {
+          type: Array,
+          value: function() {
+            return ['typed-text is awesome', 'it supports deleting!'];
+          }
+        },
+
+        // Loops between the strings
+        loop: Boolean,
+
+        // Time to wait between typed text
+        wait: {
+          type: Number,
+          value: 2000
+        },
+
+        // Typing speed
+        speed: {
+          type: Number,
+          value: 60
+        },
+
+        // Deleting speed
+        delspeed: {
+          type: Number,
+          value: 40
+        },
+
+        // custom cursor
+        cursor: {
+          type: String,
+          value: '|' //▍alternative block
+        },
+
+        // Typed text
+        _typed: {
+          type: String,
+          value: ' '
+        },
+
+        // Index of Strings array
+        _arrayIndex: {
+          type: Number,
+          value: 0
+        },
+
+        // Index of typed string
+        _index: {
+          type: Number,
+          value: -1
+        },
+
+        /* If two consecutive strings have characters in common
+         * do not retype them
+         */
+        noretype: Boolean,
+
+        _subindex: {
+          type: Number,
+          value: 0
+        }
+      },
+
+      // Element Lifecycle
+      ready: function() {
+        this._calculateSubIndex(this._arrayIndex);
+        this.async(this._typing, 500);
+      },
+
+      // Element Behavior
+      _typing: function() {
+        this._index += 1;
+        this.typed = this.strings[this._arrayIndex].substr(0, this._index);
+
+        if(this._index <= this.strings[this._arrayIndex].length){
+          this.async(this._typing, this.speed);
+        } else {
+          if(this.loop || (this._arrayIndex != this.strings.length - 1)) {
+            this.async(this._deleting, this.wait);
+          }
+        }
+      },
+
+      _deleting: function() {
+        this._index -= 1;
+
+        if(this._index >= this._subindex) {
+          this.typed = this.strings[this._arrayIndex].substr(0, this._index - 1);
+          this.async(this._deleting, this.delspeed);
+        } else {
+          this._arrayIndex = (this._arrayIndex + 1)%this.strings.length;
+          this._calculateSubIndex(this._arrayIndex);
+          this._typing();
+        }
+      },
+
+      _calculateSubIndex: function(arrayIndex) {
+        var i = 0;
+        var next = (this._arrayIndex + 1)%this.strings.length;
+        while(this.strings[arrayIndex][i] == this.strings[next][i] && this.strings.length != 1) {
+          i++;
+        }
+        this._subindex = i;
+      }
+    });
+
+  </script>
 </dom-module>
-
-<script>
-
-  Polymer({
-
-    is: 'typed-text',
-
-    properties: {
-
-      // Array of user provided strings for typing
-      strings: {
-        type: Array,
-        value: function() {
-          return ['typed-text is awesome', 'it supports deleting!'];
-        }
-      },
-
-      // Loops between the strings
-      loop: Boolean,
-
-      // Time to wait between typed text
-      wait: {
-        type: Number,
-        value: 2000
-      },
-
-      // Typing speed
-      speed: {
-        type: Number,
-        value: 60
-      },
-
-      // Deleting speed
-      delspeed: {
-        type: Number,
-        value: 40
-      },
-
-      // custom cursor
-      cursor: {
-        type: String,
-        value: '|' //▍alternative block
-      },
-
-      // Typed text
-      _typed: {
-        type: String,
-        value: ' '
-      },
-
-      // Index of Strings array
-      _indexArray: {
-        type: Number,
-        value: 0
-      },
-
-      // Index of typed string
-      _index: {
-        type: Number,
-        value: -1
-      },
-
-      /* If two consecutive strings have characters in common
-       * do not retype them
-       */
-      noretype: Boolean,
-
-      _subindex: {
-        type: Number,
-        value: 0
-      }
-
-    },
-
-    // Element Lifecycle
-
-    ready: function() {
-      // `ready` is called after all elements have been configured, but
-      // propagates bottom-up. This element's children are ready, but parents
-      // are not.
-      //
-      // This is the point where you should make modifications to the DOM (when
-      // necessary), or kick off any processes the element wants to perform.
-      this._calculateSubIndex(this._indexArray);
-      this.async(this._typing, 500);
-    },
-
-    attached: function() {
-      // `attached` fires once the element and its parents have been inserted
-      // into a document.
-      //
-      // This is a good place to perform any work related to your element's
-      // visual state or active behavior (measuring sizes, beginning animations,
-      // loading resources, etc).
-    },
-
-    detached: function() {
-      // The analog to `attached`, `detached` fires when the element has been
-      // removed from a document.
-      //
-      // Use this to clean up anything you did in `attached`.
-    },
-
-    // Element Behavior
-
-    _typing: function() {
-      this._index += 1;
-      this.typed = this.strings[this._indexArray].substr(0, this._index);
-
-      if(this._index <= this.strings[this._indexArray].length){
-        this.async(this._typing, this.speed);
-      } else {
-        if(this.loop || (this._indexArray != this.strings.length - 1)) {
-          this.async(this._deleting, this.wait);
-        }
-      }
-    },
-
-    _deleting: function() {
-      this._index -= 1;
-
-      if(this._index >= this._subindex) {
-        this.typed = this.strings[this._indexArray].substr(0, this._index - 1);
-        this.async(this._deleting, this.delspeed);
-      } else {
-        this._indexArray = (this._indexArray + 1)%this.strings.length;
-        this._calculateSubIndex(this._indexArray);
-        this._typing();
-      }
-    },
-
-    _calculateSubIndex: function(indexArray) {
-      var i = 0;
-      var next = (this._indexArray + 1)%this.strings.length;
-      while(this.strings[indexArray][i] == this.strings[next][i]) {
-        i++;
-      }
-      this._subindex = i;
-    }
-
-  });
-
-</script>
