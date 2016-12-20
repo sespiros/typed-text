@@ -101,29 +101,33 @@ An element that simulates typing
 
       // Element Behavior
       _typing: function() {
-        this._index += 1;
-        this.typed = this.strings[this._arrayIndex].substr(0, this._index);
+        requestAnimationFrame(function () {
+          this._index += 1;
+          this.typed = this.strings[this._arrayIndex].substr(0, this._index);
 
-        if(this._index <= this.strings[this._arrayIndex].length){
-          this.async(this._typing, this.speed);
-        } else {
-          if(this.loop || (this._arrayIndex != this.strings.length - 1)) {
-            this.async(this._deleting, this.wait);
+          if(this._index <= this.strings[this._arrayIndex].length){
+            this.async(this._typing, this.speed);
+          } else {
+            if(this.loop || (this._arrayIndex != this.strings.length - 1)) {
+              this.async(this._deleting, this.wait);
+            }
           }
-        }
+        }.bind(this));
       },
 
       _deleting: function() {
-        this._index -= 1;
+        requestAnimationFrame(function () {
+          this._index -= 1;
 
-        if(this._index >= this._subindex) {
-          this.typed = this.strings[this._arrayIndex].substr(0, this._index - 1);
-          this.async(this._deleting, this.delspeed);
-        } else {
-          this._arrayIndex = (this._arrayIndex + 1)%this.strings.length;
-          this._calculateSubIndex(this._arrayIndex);
-          this._typing();
-        }
+          if(this._index >= this._subindex) {
+            this.typed = this.strings[this._arrayIndex].substr(0, this._index - 1);
+            this.async(this._deleting, this.delspeed);
+          } else {
+            this._arrayIndex = (this._arrayIndex + 1)%this.strings.length;
+            this._calculateSubIndex(this._arrayIndex);
+            this._typing();
+          }
+        }.bind(this));
       },
 
       _calculateSubIndex: function(arrayIndex) {
