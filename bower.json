@@ -1,8 +1,9 @@
 {
   "name": "typed-text",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "authors": [
-    "Seimenis Spyros <sespiros@gmail.com>"
+    "Seimenis Spyros <sespiros@gmail.com>",
+    "Dimitris Moraitis <dimo@mist.io>"
   ],
   "description": "An element that simulates typing.",
   "keywords": [
