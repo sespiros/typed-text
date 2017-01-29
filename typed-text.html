@@ -12,32 +12,65 @@ An element that simulates typing
       :host {
         display: block;
         box-sizing: border-box;
+        @apply(--typed-text-options);
       }
+
       .cursor {
-        @apply(--cursor-theme);
+        @apply(--typed-text-cursor);
       }
-      @apply(--typed-text-options);
+
       .blink {
-        -webkit-animation: 1s blink step-end infinite;
-        -moz-animation: 1s blink step-end infinite;
-        -ms-animation: 1s blink step-end infinite;
-        -o-animation: 1s blink step-end infinite;
-        animation: 1s blink step-end infinite;
+        -webkit-animation: 1s blink infinite;
+        -moz-animation: 1s blink infinite;
+        -ms-animation: 1s blink infinite;
+        -o-animation: 1s blink infinite;
+        animation: 1s blink infinite;
+        @apply(--typed-text-cursor-blink);
       }
+
       @keyframes blink{
-        0% { opacity:1; }
-        50% { opacity:0; }
-        100% { opacity:1; }
+        0% {
+          opacity: 1;
+          @apply(--typed-text-cursor-blink-0);
+        }
+        50% {
+          opacity: 0;
+          @apply(--typed-text-cursor-blink-50);
+        }
+        100% {
+          opacity: 1;
+          @apply(--typed-text-cursor-blink-100);
+        }
       }
+
       @-webkit-keyframes blink{
-        0% { opacity:1; }
-        50% { opacity:0; }
-        100% { opacity:1; }
+        0% {
+          opacity: 1;
+          @apply(--typed-text-cursor-blink-0);
+        }
+        50% {
+          opacity: 0;
+          @apply(--typed-text-cursor-blink-50);
+        }
+        100% {
+          opacity: 1;
+          @apply(--typed-text-cursor-blink-100);
+        }
       }
+
       @-moz-keyframes blink{
-        0% { opacity:1; }
-        50% { opacity:0; }
-        100% { opacity:1; }
+        0% {
+          opacity: 1;
+          @apply(--typed-text-cursor-blink-0);
+        }
+        50% {
+          opacity: 0;
+          @apply(--typed-text-cursor-blink-50);
+        }
+        100% {
+          opacity: 1;
+          @apply(--typed-text-cursor-blink-100);
+        }
       }
     </style>
     <div>{{typed}}<span class$="cursor [[_isBlinking(blink)]]">{{cursor}}</span></div>

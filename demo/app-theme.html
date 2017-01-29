@@ -1,28 +1,30 @@
 <!-- Blinking cursor effect from typed.js -->
 <style is="custom-style">
   typed-text {
-    --cursor-theme: {
-      opacity: 1;
-      -webkit-animation: blink 0.7s infinite;
-      -moz-animation: blink 0.7s infinite;
-      animation: blink 0.7s infinite;
+    --typed-text-cursor: {
+      opacity: 0.6;
     };
-    --typed-text-options: {
-      @keyframes blink{
-          0% { opacity:1; }
-          50% { opacity:0; }
-          100% { opacity:1; }
-      }
-      @-webkit-keyframes blink{
-          0% { opacity:1; }
-          50% { opacity:0; }
-          100% { opacity:1; }
-      }
-      @-moz-keyframes blink{
-          0% { opacity:1; }
-          50% { opacity:0; }
-          100% { opacity:1; }
-      }
+
+    --typed-text-cursor-blink: {
+      -webkit-animation: 2s blink step-end infinite;
+      -moz-animation: 2s blink step-end infinite;
+      -ms-animation: 2s blink step-end infinite;
+      -o-animation: 2s blink step-end infinite;
+      animation: 2s blink step-end infinite;
+    }
+
+    --typed-text-cursor-blink-0: {
+      opacity: 0.6;
+      color: blue;
+    };
+
+    --typed-text-cursor-blink-50: {
+      opacity: 0;
+    };
+
+    --typed-text-cursor-blink-100: {
+      opacity: 1;
+      color: red;
     };
   }
 </style>
