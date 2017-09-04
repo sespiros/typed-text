@@ -1,6 +1,6 @@
 # &lt;typed-text&gt;
 
-Polymer 1.4 element that simulates typing similar to [typed.js](https://github.com/mattboldt/typed.js/) for jQuery.
+Polymer 2.0 element that simulates typing similar to [typed.js](https://github.com/mattboldt/typed.js/) for jQuery.
 
 Check out the [demo and full documentation](https://beta.webcomponents.org/element/sespiros/typed-text)
 
