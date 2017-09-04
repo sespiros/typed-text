@@ -12,11 +12,11 @@ An element that simulates typing
       :host {
         display: block;
         box-sizing: border-box;
-        @apply(--typed-text-options);
+        @apply --typed-text-options;
       }
 
       .cursor {
-        @apply(--typed-text-cursor);
+        @apply --typed-text-cursor;
       }
 
       .blink {
@@ -25,51 +25,51 @@ An element that simulates typing
         -ms-animation: 1s blink infinite;
         -o-animation: 1s blink infinite;
         animation: 1s blink infinite;
-        @apply(--typed-text-cursor-blink);
+        @apply --typed-text-cursor-blink;
       }
 
       @keyframes blink{
         0% {
           opacity: 1;
-          @apply(--typed-text-cursor-blink-0);
+          @apply --typed-text-cursor-blink-0;
         }
         50% {
           opacity: 0;
-          @apply(--typed-text-cursor-blink-50);
+          @apply --typed-text-cursor-blink-50;
         }
         100% {
           opacity: 1;
-          @apply(--typed-text-cursor-blink-100);
+          @apply --typed-text-cursor-blink-100;
         }
       }
 
       @-webkit-keyframes blink{
         0% {
           opacity: 1;
-          @apply(--typed-text-cursor-blink-0);
+          @apply --typed-text-cursor-blink-0;
         }
         50% {
           opacity: 0;
-          @apply(--typed-text-cursor-blink-50);
+          @apply --typed-text-cursor-blink-50;
         }
         100% {
           opacity: 1;
-          @apply(--typed-text-cursor-blink-100);
+          @apply --typed-text-cursor-blink-100;
         }
       }
 
       @-moz-keyframes blink{
         0% {
           opacity: 1;
-          @apply(--typed-text-cursor-blink-0);
+          @apply --typed-text-cursor-blink-0;
         }
         50% {
           opacity: 0;
-          @apply(--typed-text-cursor-blink-50);
+          @apply --typed-text-cursor-blink-50;
         }
         100% {
           opacity: 1;
-          @apply(--typed-text-cursor-blink-100);
+          @apply --typed-text-cursor-blink-100;
         }
       }
     </style>

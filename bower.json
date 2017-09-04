@@ -1,10 +1,5 @@
 {
   "name": "typed-text",
-  "version": "1.1.1",
-  "authors": [
-    "Seimenis Spyros <sespiros@gmail.com>",
-    "Dimitris Moraitis <dimo@mist.io>"
-  ],
   "description": "An element that simulates typing.",
   "keywords": [
     "web-component",
@@ -12,20 +7,26 @@
     "polymer",
     "typed"
   ],
-  "main": "typed-text.html",
-  "license": "http://polymer.github.io/LICENSE.txt",
+  "version": "2.0.0",
   "homepage": "https://github.com/sespiros/typed-text/",
+  "license": "MIT",
+  "authors": [
+    "Seimenis Spyros <sespiros@gmail.com>",
+    "Dimitris Moraitis <dimo@mist.io>"
+  ],
   "ignore": [
-    "/.*",
-    "/test/",
-    "/demo/"
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
   ],
   "dependencies": {
-    "polymer": "Polymer/polymer#^1.4.0"
+    "polymer": "Polymer/polymer#^2.0.0",
+    "iron-component-page": "PolymerElements/iron-component-page#^2.0.0",
+    "webcomponentsjs": "webcomponents/webcomponentsjs#^1.0.0"
   },
   "devDependencies": {
-    "iron-component-page": "PolymerElements/iron-component-page#^1.0.0",
-    "web-component-tester": "^4.0.0",
-    "webcomponentsjs": "webcomponents/webcomponentsjs#^0.7.0"
+    "web-component-tester": "^6.0.0"
   }
 }
