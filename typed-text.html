@@ -103,6 +103,20 @@ An element that simulates typing
           value: 2000
         },
 
+        //Time to wait before the first typing is started
+        initialWait: {
+          type: Number
+        },
+
+        //removes the cursor at the end of the transition
+        removeCursor: {
+          type: Boolean
+        },
+
+        _firstTyping: {
+          type: Boolean
+        },
+
         // Typing speed
         speed: {
           type: Number,
@@ -158,18 +172,34 @@ An element that simulates typing
 
       // Element Behavior
       _typing: function() {
-        requestAnimationFrame(function () {
-          this._index += 1;
-          this.typed = this.strings[this._arrayIndex].substr(0, this._index);
-
-          if(this._index <= this.strings[this._arrayIndex].length){
-            this.async(this._typing, this.speed);
+          if(this.initialWait && !this._firstTyping) {
+                this._firstTyping = true;
+                setTimeout(function () {
+                    this.animate();
+                }.bind(this), this.initialWait);
           } else {
-            if(this.loop || (this._arrayIndex != this.strings.length - 1)) {
-              this.async(this._deleting, this.wait);
-            }
+              this.animate();
           }
-        }.bind(this));
+      },
+
+      animate: function () {
+          requestAnimationFrame(function () {
+              this._index += 1;
+              this.typed = this.strings[this._arrayIndex].substr(0, this._index);
+
+              if(this._index <= this.strings[this._arrayIndex].length){
+                  this.async(this._typing, this.speed);
+              } else {
+                  if(this.loop || (this._arrayIndex != this.strings.length - 1)) {
+                      this.async(this._deleting, this.wait);
+                  } else {
+                      if(this.removeCursor === true) {
+                          var cursor = this.root.querySelector("span.cursor");
+                          cursor.parentElement.removeChild(cursor);
+                      }
+                  }
+              }
+          }.bind(this));
       },
 
       _deleting: function() {
