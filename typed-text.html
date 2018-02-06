@@ -175,14 +175,14 @@ An element that simulates typing
           if(this.initialWait && !this._firstTyping) {
                 this._firstTyping = true;
                 setTimeout(function () {
-                    this.animate();
+                    this._animate();
                 }.bind(this), this.initialWait);
           } else {
-              this.animate();
+              this._animate();
           }
       },
 
-      animate: function () {
+      _animate: function () {
           requestAnimationFrame(function () {
               this._index += 1;
               this.typed = this.strings[this._arrayIndex].substr(0, this._index);
