@@ -101,9 +101,10 @@ An element that simulates typing
           value: 2000
         },
 
-        //Time to wait before the first typing is started
+        //Time to wait before the first typing appears
         initialWait: {
-          type: Number
+          type: Number,
+          value: 500
         },
 
         //removes the cursor at the end
@@ -172,40 +173,31 @@ An element that simulates typing
         if(this.hideCursorDuringInitialWait === true) {
             this.$.cursor.style.display = "none";
         }
-        this.async(this._typing, 500);
+        this.async(function () {
+          this.$.cursor.style.display = "";
+          this._typing();
+        }.bind(this), this.initialWait);
       },
 
       // Element Behavior
       _typing: function() {
-          if(this.initialWait && !this._firstTyping) {
-                this._firstTyping = true;
-                setTimeout(function () {
-                    this.$.cursor.style.display = "";
-                    this._animate();
-                }.bind(this), this.initialWait);
+        requestAnimationFrame(function () {
+          this._index += 1;
+          this.typed = this.strings[this._arrayIndex].substr(0, this._index);
+
+          if(this._index <= this.strings[this._arrayIndex].length){
+            this.async(this._typing, this.speed);
           } else {
-              this._animate();
-          }
-      },
-
-      _animate: function () {
-          requestAnimationFrame(function () {
-              this._index += 1;
-              this.typed = this.strings[this._arrayIndex].substr(0, this._index);
-
-              if(this._index <= this.strings[this._arrayIndex].length){
-                  this.async(this._typing, this.speed);
-              } else {
-                  if(this.loop || (this._arrayIndex != this.strings.length - 1)) {
-                      this.async(this._deleting, this.wait);
-                  } else {
-                      if(this.removeCursor === true) {
-                          var cursor = this.root.querySelector("span.cursor");
-                          cursor.parentElement.removeChild(cursor);
-                      }
-                  }
+            if(this.loop || (this._arrayIndex != this.strings.length - 1)) {
+              this.async(this._deleting, this.wait);
+            } else {
+              if(this.removeCursor === true) {
+                var cursor = this.root.querySelector("span.cursor");
+                cursor.parentElement.removeChild(cursor);
               }
-          }.bind(this));
+            }
+          }
+        }.bind(this));
       },
 
       _deleting: function() {
