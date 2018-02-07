@@ -73,7 +73,7 @@ An element that simulates typing
         }
       }
     </style>
-    <div>{{typed}}<span class$="cursor [[_isBlinking(blink)]]">{{cursor}}</span></div>
+    <div>{{typed}}<span id="cursor" class$="cursor [[_isBlinking(blink)]]">{{cursor}}</span></div>
   </template>
 
   <script>
@@ -87,9 +87,7 @@ An element that simulates typing
         // Array of user provided strings for typing
         strings: {
           type: Array,
-          value: function() {
-            return ['typed-text is awesome', 'it supports deleting!'];
-          }
+          value: ['typed-text is awesome', 'it supports deleting!']
         },
 
         // Loops between the strings
@@ -101,6 +99,21 @@ An element that simulates typing
         wait: {
           type: Number,
           value: 2000
+        },
+
+        //Time to wait before the first typing appears
+        initialWait: {
+          type: Number,
+          value: 500
+        },
+
+        //removes the cursor at the end
+        removeCursor: {
+          type: Boolean
+        },
+
+        hideCursorDuringInitialWait: {
+          type: Boolean
         },
 
         // Typing speed
@@ -153,7 +166,13 @@ An element that simulates typing
       // Element Lifecycle
       ready: function() {
         this._calculateSubIndex(this._arrayIndex);
-        this.async(this._typing, 500);
+        if(this.hideCursorDuringInitialWait === true) {
+            this.$.cursor.style.display = "none";
+        }
+        this.async(function () {
+          this.$.cursor.style.display = "";
+          this._typing();
+        }.bind(this), this.initialWait);
       },
 
       // Element Behavior
@@ -167,6 +186,11 @@ An element that simulates typing
           } else {
             if(this.loop || (this._arrayIndex != this.strings.length - 1)) {
               this.async(this._deleting, this.wait);
+            } else {
+              if(this.removeCursor === true) {
+                var cursor = this.root.querySelector("span.cursor");
+                cursor.parentElement.removeChild(cursor);
+              }
             }
           }
         }.bind(this));
