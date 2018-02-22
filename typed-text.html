@@ -108,7 +108,7 @@ An element that simulates typing
         },
 
         //removes the cursor at the end
-        removeCursor: {
+        hideCursor: {
           type: Boolean
         },
 
@@ -187,9 +187,8 @@ An element that simulates typing
             if(this.loop || (this._arrayIndex != this.strings.length - 1)) {
               this.async(this._deleting, this.wait);
             } else {
-              if(this.removeCursor === true) {
-                var cursor = this.root.querySelector("span.cursor");
-                cursor.parentElement.removeChild(cursor);
+              if(this.hideCursor === true) {
+                this.$.cursor.style.display = "none"
               }
             }
           }
