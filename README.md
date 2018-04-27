@@ -26,6 +26,7 @@ Check out the [demo and full documentation](https://www.webcomponents.org/elemen
 - [x] make looping & blinking the default behaviour
 - [ ] add `random` to options to allow any string to be typed
 - [ ] pause typing in the middle of a string whenever a `^` character is seen
+- [ ] create demos
 
 ## Install
 ```bash
@@ -46,11 +47,13 @@ where `options` can be any of:
 * `strings`: an array of strings to be typed one after the other i.e. `["Hello world!", "typed-text is awesome"]`
 * `cursor`: specify a cursor string. `|` by default
 * `noretype`: only backspaces to erase the part of the string that is different
+* `noloop`: stops typing after the last string
+* `noblink`: stops the cursor from blinking
 
 ## Features
 - Can **type** and **delete** text
 - Supports constant **looping** between text
-- Cursor **blinkin** and customization with custom-style
+- Cursor **blinking** and customization with custom-style
 - Smart **noretype** to keep common parts of consecutive strings
 - Style it however you want for cool effects!
 
