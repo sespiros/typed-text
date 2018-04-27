@@ -23,7 +23,7 @@ Check out the [demo and full documentation](https://www.webcomponents.org/elemen
 -->
 
 ## TODO
-- [ ] make looping the default behaviour
+- [x] make looping & blinking the default behaviour
 - [ ] add `random` to options to allow any string to be typed
 - [ ] pause typing in the middle of a string whenever a `^` character is seen
 
@@ -50,8 +50,8 @@ where `options` can be any of:
 ## Features
 - Can **type** and **delete** text
 - Supports constant **looping** between text
-- Cursor customization with custom-style
-- Smart **noretype** function that finds common parts of consecutive strings
+- Cursor **blinkin** and customization with custom-style
+- Smart **noretype** to keep common parts of consecutive strings
 - Style it however you want for cool effects!
 
 ## Contribute
