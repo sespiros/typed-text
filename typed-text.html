@@ -94,7 +94,11 @@ An element that simulates typing
 
         // Loops between the strings
         noloop: Boolean,
-        noblink: Boolean,
+
+        noblink: {
+          type: Boolean,
+          value: false
+        },
 
         // Time to wait between typed text
         wait: {
