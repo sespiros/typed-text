@@ -22,13 +22,6 @@ Check out the [demo and full documentation](https://www.webcomponents.org/elemen
 ```
 -->
 
-## TODO
-- [x] make looping & blinking the default behaviour
-- [ ] strings from static html
-- [ ] add `random` to options to allow any string to be typed
-- [ ] pause typing in the middle of a string whenever a `^` character is seen
-- [ ] create demos
-
 ## Install
 ```bash
 bower install --save sespiros/typed-text
@@ -50,6 +43,25 @@ where `options` can be any of:
 * `noretype`: only backspaces to erase the part of the string that is different
 * `noloop`: stops typing after the last string
 * `noblink`: stops the cursor from blinking
+
+### Strings
+The typed-text strings can be set in one of two ways:
+* Using the strings property:
+```html
+<typed-text strings='["Hello world", "Another sentence"]'></typed-text>
+```
+* Writing directly into the HTML element:
+```html
+  <typed-text>
+    <p>Here is the first sentence.</p> 
+    <p>Here is another one!</p>
+  </typed-text>
+```
+
+### Cursor
+```html
+<typed-text cursor="|"></typed-text>
+```
 
 ## Features
 - Can **type** and **delete** text
