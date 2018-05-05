@@ -24,6 +24,7 @@ Check out the [demo and full documentation](https://www.webcomponents.org/elemen
 
 ## TODO
 - [x] make looping & blinking the default behaviour
+- [ ] strings from static html
 - [ ] add `random` to options to allow any string to be typed
 - [ ] pause typing in the middle of a string whenever a `^` character is seen
 - [ ] create demos

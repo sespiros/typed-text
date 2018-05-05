@@ -156,7 +156,14 @@ An element that simulates typing
       // Element Lifecycle
       ready: function() {
         this._calculateSubIndex(this._arrayIndex);
+        this.async(this.setStrings, 500);
         this.async(this._typing, 500);
+      },
+
+      // Get strings from typed-text element
+      _setStrings: function() {
+        this.strings = strip(this.innerHTML).replace(/ +(?= )/g, '').split("\n ");
+        this.strings.pop(); 
       },
 
       // Element Behavior
