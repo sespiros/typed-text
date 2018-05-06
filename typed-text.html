@@ -73,10 +73,15 @@ An element that simulates typing
         }
       }
     </style>
-    <div>{{typed}}<span class$="cursor [[_isBlinking(blink)]]">{{cursor}}</span></div>
+    <div>{{typed}}<span class$="cursor [[_isBlinking(noblink)]]">{{cursor}}</span></div>
   </template>
 
   <script>
+
+    function strip(html){
+      var doc = new DOMParser().parseFromString(html, 'text/html');
+      return doc.body.textContent;
+    }
 
     Polymer({
 
@@ -88,14 +93,19 @@ An element that simulates typing
         strings: {
           type: Array,
           value: function() {
-            return ['typed-text is awesome', 'it supports deleting!'];
+            // Uncomment below if you want the element strings property to override the inner HTML text
+            // return ['typed-text is awesome', 'it supports deleting!']; 
+            return [];
           }
         },
 
         // Loops between the strings
-        loop: Boolean,
+        noloop: Boolean,
 
-        blink: Boolean,
+        noblink: {
+          type: Boolean,
+          value: false
+        },
 
         // Time to wait between typed text
         wait: {
@@ -152,8 +162,19 @@ An element that simulates typing
 
       // Element Lifecycle
       ready: function() {
-        this._calculateSubIndex(this._arrayIndex);
+        // Get strings from HTML if the `strings` array hasn't been set
+        if (this.strings.length == 0){
+          this.async(this._setStrings, 500);
+        }
         this.async(this._typing, 500);
+      },
+
+      // Get strings from HTML
+      _setStrings: function() {
+        this.strings = strip(this.innerHTML).replace(/ +(?= )/g, '').split("\n ");
+        this.strings = this.strings.filter(function(str) {
+          return /\S/.test(str);
+        }); 
       },
 
       // Element Behavior
@@ -165,7 +186,7 @@ An element that simulates typing
           if(this._index <= this.strings[this._arrayIndex].length){
             this.async(this._typing, this.speed);
           } else {
-            if(this.loop || (this._arrayIndex != this.strings.length - 1)) {
+            if(!this.noloop || (this._arrayIndex != this.strings.length - 1)) {
               this.async(this._deleting, this.wait);
             }
           }
@@ -197,7 +218,7 @@ An element that simulates typing
       },
 
       _isBlinking: function() {
-        return this.blink && 'blink';
+        return !this.noblink && 'blink';
       }
     });
 
