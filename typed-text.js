@@ -1,0 +1,227 @@
+/**
+`typed-text`
+An element that simulates typing
+
+@demo demo/index.html
+*/
+/*
+  FIXME(polymer-modulizer): the above comments were extracted
+  from HTML and may be out of place here. Review them and
+  then delete this comment!
+*/
+import '@polymer/polymer/polymer-legacy.js';
+
+import { Polymer } from '@polymer/polymer/lib/legacy/polymer-fn.js';
+import { html as html$0 } from '@polymer/polymer/lib/utils/html-tag.js';
+
+function strip(html){
+  var doc = new DOMParser().parseFromString(html, 'text/html');
+  return doc.body.textContent;
+}
+
+Polymer({
+  _template: html$0`
+    <style>
+      :host {
+        display: block;
+        box-sizing: border-box;
+        @apply --typed-text-options;
+      }
+
+      .cursor {
+        @apply --typed-text-cursor;
+      }
+
+      .blink {
+        -webkit-animation: 1s blink infinite;
+        -moz-animation: 1s blink infinite;
+        -ms-animation: 1s blink infinite;
+        -o-animation: 1s blink infinite;
+        animation: 1s blink infinite;
+        @apply --typed-text-cursor-blink;
+      }
+
+      @keyframes blink{
+        0% {
+          opacity: 1;
+          @apply --typed-text-cursor-blink-0;
+        }
+        50% {
+          opacity: 0;
+          @apply --typed-text-cursor-blink-50;
+        }
+        100% {
+          opacity: 1;
+          @apply --typed-text-cursor-blink-100;
+        }
+      }
+
+      @-webkit-keyframes blink{
+        0% {
+          opacity: 1;
+          @apply --typed-text-cursor-blink-0;
+        }
+        50% {
+          opacity: 0;
+          @apply --typed-text-cursor-blink-50;
+        }
+        100% {
+          opacity: 1;
+          @apply --typed-text-cursor-blink-100;
+        }
+      }
+
+      @-moz-keyframes blink{
+        0% {
+          opacity: 1;
+          @apply --typed-text-cursor-blink-0;
+        }
+        50% {
+          opacity: 0;
+          @apply --typed-text-cursor-blink-50;
+        }
+        100% {
+          opacity: 1;
+          @apply --typed-text-cursor-blink-100;
+        }
+      }
+    </style>
+    <div>{{typed}}<span class\$="cursor [[_isBlinking(noblink)]]">{{cursor}}</span></div>
+`,
+
+  is: 'typed-text',
+
+  properties: {
+
+    // Array of user provided strings for typing
+    strings: {
+      type: Array,
+      value: function() {
+        // Uncomment below if you want the element strings property to override the inner HTML text
+        // return ['typed-text is awesome', 'it supports deleting!']; 
+        return [];
+      }
+    },
+
+    // Loops between the strings
+    noloop: Boolean,
+
+    noblink: {
+      type: Boolean,
+      value: false
+    },
+
+    // Time to wait between typed text
+    wait: {
+      type: Number,
+      value: 2000
+    },
+
+    // Typing speed
+    speed: {
+      type: Number,
+      value: 60
+    },
+
+    // Deleting speed
+    delspeed: {
+      type: Number,
+      value: 40
+    },
+
+    // custom cursor
+    cursor: {
+      type: String,
+      value: '|' //▍alternative block
+    },
+
+    // Typed text
+    _typed: {
+      type: String,
+      value: ' '
+    },
+
+    // Index of Strings array
+    _arrayIndex: {
+      type: Number,
+      value: 0
+    },
+
+    // Index of typed string
+    _index: {
+      type: Number,
+      value: -1
+    },
+
+    /* If two consecutive strings have characters in common
+     * do not retype them
+     */
+    noretype: Boolean,
+
+    _subindex: {
+      type: Number,
+      value: 0
+    }
+  },
+
+  // Element Lifecycle
+  ready: function() {
+    // Get strings from HTML if the `strings` array hasn't been set
+    if (this.strings.length == 0){
+      this.async(this._setStrings, 500);
+    }
+    this.async(this._typing, 500);
+  },
+
+  // Get strings from HTML
+  _setStrings: function() {
+    this.strings = strip(this.innerHTML).replace(/ +(?= )/g, '').split("\n ");
+    this.strings = this.strings.filter(function(str) {
+      return /\S/.test(str);
+    }); 
+  },
+
+  // Element Behavior
+  _typing: function() {
+    requestAnimationFrame(function () {
+      this._index += 1;
+      this.typed = this.strings[this._arrayIndex].substr(0, this._index);
+
+      if(this._index <= this.strings[this._arrayIndex].length){
+        this.async(this._typing, this.speed);
+      } else {
+        if(!this.noloop || (this._arrayIndex != this.strings.length - 1)) {
+          this.async(this._deleting, this.wait);
+        }
+      }
+    }.bind(this));
+  },
+
+  _deleting: function() {
+    requestAnimationFrame(function () {
+      this._index -= 1;
+
+      if(this._index >= this._subindex) {
+        this.typed = this.strings[this._arrayIndex].substr(0, this._index - 1);
+        this.async(this._deleting, this.delspeed);
+      } else {
+        this._arrayIndex = (this._arrayIndex + 1)%this.strings.length;
+        this._calculateSubIndex(this._arrayIndex);
+        this._typing();
+      }
+    }.bind(this));
+  },
+
+  _calculateSubIndex: function(arrayIndex) {
+    var i = 0;
+    var next = (this._arrayIndex + 1)%this.strings.length;
+    while(this.strings[arrayIndex][i] == this.strings[next][i] && this.strings.length != 1) {
+      i++;
+    }
+    this._subindex = i;
+  },
+
+  _isBlinking: function() {
+    return !this.noblink && 'blink';
+  }
+});

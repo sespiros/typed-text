@@ -1,5 +1,6 @@
-<!-- Blinking cursor effect from typed.js -->
-<style is="custom-style">
+const $_documentContainer = document.createElement('template');
+
+$_documentContainer.innerHTML = `<style is="custom-style">
   typed-text {
     --typed-text-cursor: {
       opacity: 0.6;
@@ -27,4 +28,14 @@
       color: red;
     };
   }
-</style>
+</style>`;
+
+document.head.appendChild($_documentContainer.content);
+
+/* Blinking cursor effect from typed.js */
+/*
+  FIXME(polymer-modulizer): the above comments were extracted
+  from HTML and may be out of place here. Review them and
+  then delete this comment!
+*/
+;
